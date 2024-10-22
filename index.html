@@ -13,8 +13,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            direction: rtl;
-            text-align: right;
+            direction: rtl; /* כיוון קריאה */
+            text-align: right; /* טקסט מימין לשמאל */
         }
         h1 {
             margin-bottom: 20px;
@@ -63,7 +63,7 @@
             border-radius: 5px;
         }
         #embedButton, #copyButton {
-            display: none;
+            display: none; /* הכפתור מוסתר בהתחלה */
             margin-top: 10px;
         }
     </style>
@@ -72,6 +72,7 @@
     <h1>כלי ליצירת אינפוגרפיקות</h1>
     <form id="dataForm">
         <label for="data">הזינו את הנתונים (אחד לשורה)</label>
+        <textarea id="data" required></textarea>
         <button type="button" onclick="createChart('bar')">עמודות</button>
         <button type="button" onclick="createChart('pie')">עוגה</button>
         <button type="button" onclick="createTable()">טבלה</button>
@@ -80,9 +81,9 @@
     <div id="chartContainer"></div>
     <div id="tableContainer" style="display:none;"></div>
     
-    <button id="embedButton" type="button" onclick="showEmbedCode()">הטמע את התוצר</button>
-    <div id="embedCode"></div>
-    <button id="copyButton" type="button" onclick="copyEmbedCode()">העתק קוד להטמעה</button>
+    <button id="embedButton" type="button" onclick="showEmbedCode()">הטמע את התוצר</button> <!-- כפתור מוסתר -->
+    <div id="embedCode"></div> <!-- אזור להציג את קוד ההטמעה -->
+    <button id="copyButton" type="button" onclick="copyEmbedCode()">העתק קוד להטמעה</button> <!-- כפתור העתקה -->
     
     <script src="https://unpkg.com/compromise"></script>
     <script>
@@ -95,7 +96,7 @@
             const quantities = doc.numbers().out('array').map(Number);
             const labels = doc.nouns().out('array');
 
-            return { labels, data: quantities };
+            return { labels, data: quantities }; // מחזירים את המספרים כמות שהם
         }
 
         function createChart(type) {
@@ -132,7 +133,7 @@
             
             document.getElementById('chartContainer').innerHTML = `<img src="${chartURL}" alt="Chart">`;
             document.getElementById('tableContainer').style.display = 'none';
-            document.getElementById('embedButton').style.display = 'inline-block';
+            document.getElementById('embedButton').style.display = 'inline-block'; // הצגת הכפתור
         }
 
         function createTable() {
@@ -146,14 +147,14 @@
 
             let tableHTML = '<table border="1" style="margin-top: 20px; border-collapse: collapse; width: 100%;"><tr><th>תווית</th><th>ערך</th></tr>';
             for (let i = 0; i < labels.length; i++) {
-                tableHTML += `<tr><td>${labels[i]}</td><td>${formatNumber(data[i])}</td></tr>`;
+                tableHTML += `<tr><td>${labels[i]}</td><td>${formatNumber(data[i])}</td></tr>`; // הצגת המספרים עם פסיקים
             }
             tableHTML += '</table>';
             
             document.getElementById('tableContainer').innerHTML = tableHTML;
             document.getElementById('tableContainer').style.display = 'block';
             document.getElementById('chartContainer').innerHTML = '';
-            document.getElementById('embedButton').style.display = 'inline-block';
+            document.getElementById('embedButton').style.display = 'inline-block'; // הצגת הכפתור
         }
 
         function showEmbedCode() {
@@ -168,7 +169,7 @@
             const embedCodeContainer = document.getElementById('embedCode');
             embedCodeContainer.innerText = embedHTML;
             embedCodeContainer.style.display = 'block';
-            document.getElementById('copyButton').style.display = 'inline-block';
+            document.getElementById('copyButton').style.display = 'inline-block'; // הצגת כפתור ההעתקה
         }
 
         function copyEmbedCode() {
@@ -178,12 +179,13 @@
                 return;
             }
 
+            // יצירת אלמנט textarea זמני
             const tempTextArea = document.createElement('textarea');
             tempTextArea.value = embedCode;
             document.body.appendChild(tempTextArea);
             tempTextArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempTextArea);
+            document.execCommand('copy'); // העתקה
+            document.body.removeChild(tempTextArea); // הסרת האלמנט
 
             alert("הקוד הועתק ומוכן להטמעה!");
         }
